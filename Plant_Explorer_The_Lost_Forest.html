@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>นักสำรวจป่า : The Lost Forest</title>
+<style>
+:root{--green:#2f7d4c;--deep:#123d2b;--mint:#dff5dc;--cream:#fffdf4;--gold:#f6c85f;--brown:#704b2a;--red:#d95b5b}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,"Noto Sans Thai",sans-serif;background:#0d2d22;color:#173226} body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.18) 0 2px,transparent 3px),radial-gradient(circle at 75% 35%,rgba(255,255,255,.14) 0 2px,transparent 3px),radial-gradient(circle at 45% 80%,rgba(255,255,255,.12) 0 2px,transparent 3px);background-size:180px 180px,240px 240px,210px 210px;animation:drift 18s linear infinite;z-index:0}@keyframes drift{to{background-position:180px 180px,-240px 240px,210px -210px}}
+button{font:inherit;cursor:pointer;border:0} .screen{display:none;min-height:100vh;padding:24px;position:relative;overflow:hidden}
+.screen.active{display:flex;align-items:center;justify-content:center}.forest{background:linear-gradient(180deg,#aee1bd 0%,#5fa76d 45%,#163d2d 100%)}
+.forest:before,.forest:after{content:"";position:absolute;border-radius:50%;filter:blur(1px);opacity:.35}.forest:before{width:520px;height:520px;background:#d7f5b2;top:-260px;left:-180px}.forest:after{width:650px;height:650px;background:#0e5536;bottom:-380px;right:-220px}
+.card{width:min(900px,100%);background:rgba(255,253,244,.97);border-radius:30px;padding:28px;box-shadow:0 18px 50px rgba(0,0,0,.22);position:relative;z-index:2;animation:cardIn .55s ease}@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:45px 28px}.badge{display:inline-block;background:#dff5dc;color:#2f7d4c;padding:7px 13px;border-radius:999px;font-weight:bold;letter-spacing:.5px}
+h1{font-size:clamp(2.3rem,7vw,5.4rem);margin:14px 0 0;color:var(--deep);line-height:.95}.subtitle{font-size:clamp(1rem,2.5vw,1.35rem);letter-spacing:3px;margin:18px 0;color:#47755a}.story{max-width:620px;margin:20px auto 28px;font-size:1.05rem;line-height:1.6}
+.hero-art{font-size:clamp(5rem,16vw,10rem);margin:10px;animation:floatArt 3s ease-in-out infinite}@keyframes floatArt{50%{transform:translateY(-10px) rotate(1deg)}}.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.primary,.secondary,.choice{padding:14px 22px;border-radius:16px;font-weight:bold;transition:.2s transform,.2s filter}.primary{background:var(--green);color:#fff;box-shadow:0 8px 0 #1d5634}.primary:hover{transform:translateY(-2px);filter:brightness(1.08)}.secondary{background:#e9f2e7;color:#285a3d}.choice{width:100%;text-align:left;background:#edf5ec;color:#214533;border:2px solid transparent;margin:7px 0}.choice:hover{border-color:#76b788;transform:translateX(3px)}.choice.correct{background:#c8f0cb;border-color:#45a658}.choice.wrong{background:#f8d0d0;border-color:#d95b5b}.hidden{display:none!important}
+.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.stat{background:#eef6e9;padding:9px 13px;border-radius:13px;font-weight:bold}.progress{height:12px;background:#dbe8dc;border-radius:999px;overflow:hidden;margin:18px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,#65b776,#f6c85f);transition:.4s}.difficulty{font-weight:bold;padding:7px 11px;border-radius:999px;background:#fff0c9;color:#805d11;display:inline-block}.definition{font-size:clamp(1.25rem,3vw,1.8rem);line-height:1.45;margin:20px 0}.feedback{padding:14px;border-radius:15px;margin-top:14px;font-weight:bold}.feedback.good{background:#d8f2d8}.feedback.bad{background:#f7dddd}.section-title{color:var(--deep);margin-top:0}.vocab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.vocab{background:#eef6e9;border-radius:16px;padding:15px;transition:.2s;box-shadow:0 5px 14px rgba(30,80,45,.08)}.vocab:hover{transform:translateY(-3px)}.character{background:linear-gradient(145deg,#f4faee,#dcefd7);border:3px solid transparent;border-radius:22px;padding:18px;text-align:center;transition:.25s;box-shadow:0 8px 18px rgba(30,80,45,.1)}.character:hover{transform:translateY(-6px);box-shadow:0 15px 25px rgba(30,80,45,.18)}.character.selected{border-color:#2f7d4c;background:#d8f2d5;transform:translateY(-5px);box-shadow:0 0 0 5px rgba(47,125,76,.12),0 16px 28px rgba(30,80,45,.18)}.character-avatar{font-size:4.5rem;margin:4px}.selected-avatar{font-size:3.5rem}.vocab b{font-size:1.1rem}.map{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}.zone{padding:22px;border-radius:20px;background:linear-gradient(135deg,#e7f5dd,#c4e8c1);font-weight:bold;min-height:130px;box-shadow:0 8px 18px rgba(20,70,40,.12);transition:.25s}.zone:hover{transform:translateY(-5px) scale(1.01);box-shadow:0 14px 25px rgba(20,70,40,.18)}.zone span{display:block;font-size:2rem;margin-bottom:10px}.result-score{font-size:4rem;font-weight:900;color:var(--green);text-align:center;margin:12px}.review-item{padding:15px;border-radius:15px;background:#f0f6ee;margin:10px 0;border-left:6px solid #6aab78}.small{color:#52705b;font-size:.92rem}.hearts{letter-spacing:3px;color:#c94040}.footer-note{text-align:center;color:#466454;margin-top:18px}
+@media(max-width:600px){.screen{padding:12px}.card{padding:20px;border-radius:22px}.topbar{font-size:.9rem}.primary,.secondary{width:100%}}
+
+.story-screen{min-height:100vh;padding:18px;position:relative}
+.story-card{width:min(1000px,100%);background:rgba(255,253,244,.97);border-radius:30px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative;z-index:3}
+.story-scene{min-height:360px;border-radius:26px;padding:28px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(180deg,rgba(180,225,195,.35),rgba(24,74,48,.85)),radial-gradient(circle at 72% 22%,#fff6b0 0 5%,transparent 6%),linear-gradient(135deg,#77bd82,#235c40);color:#fff;position:relative;overflow:hidden}
+.story-scene:before{content:"🌲   🌳      🌿   🌳   🌲      🍃     🌳";position:absolute;top:24px;left:-5px;font-size:4rem;white-space:nowrap;opacity:.55;animation:forestPan 18s linear infinite}
+.story-scene:after{content:"🍃  ✨  🍂   🍃   ✨   🌱   🍃";position:absolute;bottom:20px;left:0;width:100%;font-size:2rem;opacity:.7;animation:leaves 5s ease-in-out infinite}
+@keyframes forestPan{to{transform:translateX(-180px)}}@keyframes leaves{50%{transform:translateY(-9px)}}
+.story-title{font-size:clamp(2rem,6vw,4rem);margin:0 0 8px;text-shadow:0 4px 18px rgba(0,0,0,.35)}
+.character-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+.character{background:linear-gradient(145deg,#f7fbf0,#dcefd8);border:3px solid transparent;border-radius:24px;padding:18px;text-align:center;transition:.25s;box-shadow:0 9px 22px rgba(30,80,45,.12)}
+.character:hover{transform:translateY(-7px) scale(1.01)}.character.selected{border-color:#2f7d4c;background:#d6f1d4;box-shadow:0 0 0 5px rgba(47,125,76,.12),0 15px 30px rgba(30,80,45,.2)}
+.character-avatar{font-size:5rem}.character.locked{opacity:.72}.ticket{color:#8b6415;font-weight:800}
+.name-input{width:100%;max-width:520px;padding:15px 18px;border:2px solid #c8dcc7;border-radius:15px;font-size:1.05rem;outline:none}.name-input:focus{border-color:#4b9961}
+.explore-hud{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:14px}.hud{background:rgba(255,255,255,.88);padding:9px 13px;border-radius:13px;font-weight:800}
+.path-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:18px}.path-btn{min-height:150px;border-radius:22px;padding:18px;text-align:left;background:linear-gradient(145deg,#eef8e9,#cce9c8);box-shadow:0 10px 22px rgba(30,80,45,.12);transition:.25s}.path-btn:hover{transform:translateY(-6px);box-shadow:0 16px 28px rgba(30,80,45,.18)}.path-btn .icon{font-size:2.7rem;display:block}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}.shop-card{background:#f1f7ee;border-radius:22px;padding:18px;text-align:center;border:2px solid #d9e8d5}.shop-avatar{font-size:5rem}.locked-label{color:#7b6325;font-weight:bold}.unlocked-label{color:#2f7d4c;font-weight:bold}
+.modal{position:fixed;inset:0;background:rgba(9,42,29,.7);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}.modal .story-card{max-height:90vh;overflow:auto}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#173e2c;color:#fff;padding:14px 20px;border-radius:15px;z-index:80;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:toastIn .3s ease}.hidden{display:none!important}
+
+.mystery-character{background:linear-gradient(145deg,#eee9f8,#d8cfee);border-style:dashed}.mystery-shop{background:linear-gradient(145deg,#f2eff9,#ded5ef);border:2px dashed #8a78a9}.mystery-shop .shop-avatar{filter:drop-shadow(0 5px 10px rgba(80,55,100,.2))}
+
+.mystery-silhouette{width:92px;height:112px;margin:0 auto 10px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;filter:drop-shadow(0 8px 12px rgba(38,20,62,.22))}.mystery-silhouette .head{width:46px;height:46px;border-radius:50%;background:linear-gradient(145deg,#514a63,#211d2c);position:relative;z-index:2}.mystery-silhouette .body{width:78px;height:58px;border-radius:42px 42px 18px 18px;background:linear-gradient(145deg,#514a63,#211d2c);margin-top:-2px}.mystery-silhouette .qmark{position:absolute;top:4px;left:0;right:0;text-align:center;color:#fff;font-size:29px;font-weight:900;line-height:46px;text-shadow:0 2px 8px rgba(0,0,0,.45);z-index:3}.mystery-silhouette.big{transform:scale(1.18);margin-bottom:18px}
+</style>
+</head>
+<body>
+<section id="home" class="screen forest active"><div class="card hero">
+<div class="badge">GRADE 10 • ENGLISH LEARNING GAME</div>
+<div class="hero-art">🌿🧭🌳</div>
+<h1>PLANT EXPLORER</h1><h2 style="margin:8px;color:#704b2a">THE LOST FOREST</h2>
+<div class="subtitle">สำรวจ • เรียนรู้ • ค้นพบ</div>
+<p class="story">เข้าสู่ป่าลึกลับ! ออกสำรวจพื้นที่ต่าง ๆ เรียนรู้คำศัพท์เกี่ยวกับพืช และทำภารกิจให้สำเร็จ เพื่อก้าวสู่การเป็นนักสำรวจป่าตัวจริง</p>
+<div class="btns"><button class="primary" onclick="startAdventure()">เริ่มการผจญภัย</button><button class="secondary" onclick="show('how')">วิธีการเล่น</button><button class="secondary" onclick="show('vocab')">คลังคำศัพท์</button><button class="secondary" onclick="openShop()">ร้านค้าตัวละคร</button></div>
+<p class="footer-note">ค้นหาคำศัพท์ทั้ง 10 คำที่ซ่อนอยู่ในป่า และทำภารกิจการผจญภัยให้สำเร็จ!</p>
+</div></section>
+
+<section id="how" class="screen forest"><div class="story-card"><h2 class="section-title">🧭 วิธีการเล่น</h2>
+<p>หนูจะรับบทเป็นนักสำรวจป่าที่ต้องเดินทางผ่านเส้นทางต่าง ๆ ใน Lost Forest แต่ละเส้นทางจะพบเหตุการณ์หรือสิ่งที่เกี่ยวข้องกับธรรมชาติ และบางจุดจะมีภารกิจภาษาอังกฤษให้ทำ</p>
+<ol><li>เลือกตัวละครและตั้งชื่อนักสำรวจของตัวเอง</li><li>เลือกเส้นทางเพื่อสำรวจป่าและอ่านเรื่องราวที่พบ</li><li>เมื่อเจอภารกิจ ให้ใช้คำศัพท์และความหมายภาษาอังกฤษเพื่อเลือกคำตอบ</li><li>ตอบถูกจะได้คะแนนและตั๋วสะสม</li><li>ตอบผิดจะเสียหัวใจ 1 ดวง</li><li>ถ้าหัวใจเหลือ 0 ดวง การสำรวจรอบนั้นจะจบทันที</li><li>นำตั๋วที่สะสมไปปลดล็อกตัวละครใหม่ในร้านค้า</li></ol>
+<div class="btns"><button class="primary" onclick="show('home')">กลับหน้าแรก</button></div></div></section>
+
+<section id="vocab" class="screen forest"><div class="card"><h2 class="section-title">🌱 คลังคำศัพท์สำหรับนักสำรวจ</h2><p class="small">ทบทวนคำศัพท์ก่อนเข้าสู่ป่า</p><div id="vocabGrid" class="vocab-grid"></div><div class="btns" style="margin-top:18px"><button class="primary" onclick="show('home')">BACK TO HOME</button></div></div></section>
+
+<section id="character" class="screen forest"><div class="story-card">
+<div class="badge">CHOOSE YOUR EXPLORER</div><h2 class="section-title">🧭 เลือกนักสำรวจของคุณ</h2>
+<p>เลือกตัวละครที่ชอบ แล้วตั้งชื่อให้นักสำรวจของหนูเอง ตัวละครบางตัวจะต้องใช้ตั๋วสะสมเพื่อปลดล็อก</p>
+<input id="playerName" class="name-input" maxlength="18" placeholder="ตั้งชื่อนักสำรวจของคุณ">
+<div id="characterGrid" class="character-grid" style="margin-top:20px"></div>
+<div id="selectedCharacter" class="feedback good" style="text-align:center;margin-top:18px">กรุณาเลือกตัวละคร</div>
+<div class="btns"><button class="primary" id="continueCharacter" onclick="confirmCharacter()" disabled>เข้าสู่ป่า</button><button class="secondary" onclick="show('home')">ย้อนกลับ</button></div>
+</div></section>
+
+<section id="map" class="screen forest"><div class="story-card">
+<div class="explore-hud"><div class="hud" id="mapPlayer">🧭 นักสำรวจ</div><div class="hud" id="mapTickets">🎟️ ตั๋ว: 0</div><div class="hud" id="mapHearts">❤️ 3</div></div>
+<div class="story-scene"><div class="badge">THE LOST FOREST</div><h2 class="story-title" id="sceneTitle">เส้นทางแรก</h2><p id="sceneText">หมอกบาง ๆ ปกคลุมทางเดิน หนูมองเห็นทางแยกหลายทางอยู่ข้างหน้า...</p></div>
+<h2 class="section-title" style="margin-top:20px">เลือกทางที่จะสำรวจ</h2><div class="path-grid" id="pathGrid"></div>
+<div class="btns" style="margin-top:18px"><button class="secondary" onclick="openShop()">ร้านค้าตัวละคร</button><button class="secondary" onclick="show('vocab')">คำศัพท์</button><button class="secondary" onclick="show('home')">หน้าแรก</button></div>
+</div></section>
+
+
+<section id="shop" class="screen forest"><div class="story-card"><div class="topbar"><h2 class="section-title">🎟️ ร้านค้าตัวละคร</h2><div class="stat" id="shopTickets">🎟️ ตั๋ว: 0</div></div>
+<p>ใช้ตั๋วที่สะสมจากการผจญภัยเพื่อปลดล็อกนักสำรวจคนใหม่ ตัวละครที่ปลดล็อกแล้วใช้ได้ทุกครั้งที่เริ่มเกมใหม่</p>
+<div id="shopGrid" class="shop-grid"></div>
+<div class="btns" style="margin-top:20px"><button class="primary" onclick="show('home')">กลับหน้าแรก</button><button class="secondary" onclick="show('character')">เลือกตัวละคร</button></div></div></section>
+
+<section id="game" class="screen forest"><div class="card">
+<div class="topbar"><div class="stat" id="playerStat">🧭 Explorer</div><div class="stat" id="qstat">Question 1 / 10</div><div class="stat" id="score">⭐ Score: 0 / 100</div><div class="stat hearts" id="hearts">❤ ❤ ❤</div></div>
+<div class="progress"><div id="bar" class="bar"></div></div>
+<div id="difficulty" class="difficulty">EASY</div>
+<h2 style="margin-bottom:0">Which word means:</h2><div id="definition" class="definition"></div>
+<div id="choices"></div><div id="feedback" class="feedback hidden"></div>
+<div class="btns" style="margin-top:18px"><button id="nextBtn" class="primary hidden" onclick="nextQuestion()">NEXT</button><button class="secondary" onclick="show('map')">แผนที่ป่า</button></div>
+</div></section>
+
+<section id="result" class="screen forest"><div class="card hero"><div class="badge">จบการผจญภัย</div><h2>คะแนนของคุณ</h2><div id="finalScore" class="result-score">0 / 100</div><p id="resultText" class="story"></p><div id="resultStats" class="small"></div>
+<div class="btns"><button class="primary" onclick="startAdventure()">เล่นอีกครั้ง</button><button class="secondary" onclick="showReview()">ดูคำตอบ</button><button class="secondary" onclick="show('vocab')">คำศัพท์</button><button class="secondary" onclick="show('home')">หน้าแรก</button></div></div></section>
+
+<div id="celebrate" class="hidden" style="position:fixed;inset:0;z-index:20;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:5rem">
+<span style="animation:celebrate .9s ease-out">✨🌿🎉🌱🎉🌿✨</span></div>
+<style>@keyframes celebrate{0%{transform:scale(.3) rotate(-8deg);opacity:0}70%{transform:scale(1.15) rotate(4deg);opacity:1}100%{transform:scale(1)}}
+.story-screen{min-height:100vh;padding:18px;position:relative}
+.story-card{width:min(1000px,100%);background:rgba(255,253,244,.97);border-radius:30px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative;z-index:3}
+.story-scene{min-height:360px;border-radius:26px;padding:28px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(180deg,rgba(180,225,195,.35),rgba(24,74,48,.85)),radial-gradient(circle at 72% 22%,#fff6b0 0 5%,transparent 6%),linear-gradient(135deg,#77bd82,#235c40);color:#fff;position:relative;overflow:hidden}
+.story-scene:before{content:"🌲   🌳      🌿   🌳   🌲      🍃     🌳";position:absolute;top:24px;left:-5px;font-size:4rem;white-space:nowrap;opacity:.55;animation:forestPan 18s linear infinite}
+.story-scene:after{content:"🍃  ✨  🍂   🍃   ✨   🌱   🍃";position:absolute;bottom:20px;left:0;width:100%;font-size:2rem;opacity:.7;animation:leaves 5s ease-in-out infinite}
+@keyframes forestPan{to{transform:translateX(-180px)}}@keyframes leaves{50%{transform:translateY(-9px)}}
+.story-title{font-size:clamp(2rem,6vw,4rem);margin:0 0 8px;text-shadow:0 4px 18px rgba(0,0,0,.35)}
+.character-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+.character{background:linear-gradient(145deg,#f7fbf0,#dcefd8);border:3px solid transparent;border-radius:24px;padding:18px;text-align:center;transition:.25s;box-shadow:0 9px 22px rgba(30,80,45,.12)}
+.character:hover{transform:translateY(-7px) scale(1.01)}.character.selected{border-color:#2f7d4c;background:#d6f1d4;box-shadow:0 0 0 5px rgba(47,125,76,.12),0 15px 30px rgba(30,80,45,.2)}
+.character-avatar{font-size:5rem}.character.locked{opacity:.72}.ticket{color:#8b6415;font-weight:800}
+.name-input{width:100%;max-width:520px;padding:15px 18px;border:2px solid #c8dcc7;border-radius:15px;font-size:1.05rem;outline:none}.name-input:focus{border-color:#4b9961}
+.explore-hud{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:14px}.hud{background:rgba(255,255,255,.88);padding:9px 13px;border-radius:13px;font-weight:800}
+.path-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:18px}.path-btn{min-height:150px;border-radius:22px;padding:18px;text-align:left;background:linear-gradient(145deg,#eef8e9,#cce9c8);box-shadow:0 10px 22px rgba(30,80,45,.12);transition:.25s}.path-btn:hover{transform:translateY(-6px);box-shadow:0 16px 28px rgba(30,80,45,.18)}.path-btn .icon{font-size:2.7rem;display:block}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}.shop-card{background:#f1f7ee;border-radius:22px;padding:18px;text-align:center;border:2px solid #d9e8d5}.shop-avatar{font-size:5rem}.locked-label{color:#7b6325;font-weight:bold}.unlocked-label{color:#2f7d4c;font-weight:bold}
+.modal{position:fixed;inset:0;background:rgba(9,42,29,.7);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}.modal .story-card{max-height:90vh;overflow:auto}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#173e2c;color:#fff;padding:14px 20px;border-radius:15px;z-index:80;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:toastIn .3s ease}.hidden{display:none!important}
+</style>
+
+<div id="storyModal" class="modal hidden"><div class="story-card"><div class="story-scene" style="min-height:280px"><div class="badge" id="modalBadge">DISCOVERY</div><h2 class="story-title" id="modalTitle">พบสิ่งใหม่!</h2><p id="modalText">...</p></div><div class="btns" style="margin-top:18px"><button class="primary" onclick="closeStory()">เดินทางต่อ</button></div></div></div>
+<div id="toast" class="toast hidden"></div>
+
+<section id="review" class="screen forest"><div class="card"><h2 class="section-title">📖 Explorer's Answer Review</h2><div id="reviewList"></div><div class="btns"><button class="primary" onclick="show('result')">BACK TO RESULT</button></div></div></section>
+
+<script>
+const questions=[
+['EASY','The green part of a plant that makes food using sunlight.','Leaf',['Root','Leaf','Seed','Flower'],'ใบไม้'],
+['EASY','The part of a plant that usually grows underground and takes in water.','Root',['Root','Fruit','Stem','Leaf'],'ราก'],
+['EASY','A small part of a plant that can grow into a new plant.','Seed',['Flower','Seed','Grass','Root'],'เมล็ด'],
+['MEDIUM','The part of a plant that supports the leaves and carries water from the roots.','Stem',['Stem','Fruit','Leaf','Seed'],'ลำต้น'],
+['MEDIUM','The colorful part of many plants that helps the plant reproduce and make seeds.','Flower',['Root','Flower','Grass','Water'],'ดอกไม้'],
+['MEDIUM','A tall plant with a hard trunk, branches, and leaves.','Tree',['Tree','Grass','Flower','Fruit'],'ต้นไม้'],
+['MEDIUM','A green plant with long, narrow leaves that commonly grows on the ground.','Grass',['Seed','Grass','Root','Tree'],'หญ้า'],
+['HARD','The part of some plants that develops from a flower and often contains seeds.','Fruit',['Fruit','Stem','Leaf','Grass'],'ผลไม้'],
+['HARD','A liquid that plants absorb through their roots and need for healthy growth.','Water',['Sun','Water','Seed','Flower'],'น้ำ'],
+['HARD','The star that provides the light and energy plants use to make food.','Sun',['Tree','Water','Sun','Root'],'ดวงอาทิตย์']
+];
+const characters=[
+ {id:'mina',name:'Mina',avatar:'👩🏻‍🔬',cost:0,style:'นักพฤกษศาสตร์',desc:'ช่างสังเกตและรักการค้นพบ'},
+ {id:'leo',name:'Leo',avatar:'🧑🏻‍🌾',cost:0,style:'ผู้พิทักษ์ป่า',desc:'กล้าหาญและชอบเส้นทางผจญภัย'},
+ {id:'luna',name:'Luna',avatar:'🧚🏻‍♀️',cost:12,style:'ผู้ชี้ทางแห่งธรรมชาติ',desc:'รู้จักเส้นทางลับในผืนป่า'},
+ {id:'kai',name:'Kai',avatar:'🧭🧑🏻',cost:18,style:'นักสำรวจรุ่นเยาว์',desc:'คล่องแคล่วและไม่ยอมแพ้'},
+ {id:'aria',name:'Aria',avatar:'🧗🏻‍♀️',cost:25,style:'นักปีนเขา',desc:'ชอบพื้นที่สูงและการค้นพบครั้งใหม่'},
+ {id:'noah',name:'Noah',avatar:'🔭🧑🏻',cost:30,style:'นักสังเกตการณ์',desc:'ละเอียด รอบคอบ และชอบไขปริศนา'},
+ {id:'ivy',name:'Ivy',avatar:'🏕️👩🏻',cost:36,style:'นักตั้งแคมป์',desc:'เชี่ยวชาญการเดินทางและเอาตัวรอดในป่า'},
+ {id:'ethan',name:'Ethan',avatar:'🥾🧑🏻',cost:42,style:'นักเดินป่า',desc:'ชอบเส้นทางไกลและการค้นพบสถานที่ใหม่'},
+ {id:'nora',name:'Nora',avatar:'📷👩🏻',cost:50,style:'นักถ่ายภาพธรรมชาติ',desc:'มองเห็นรายละเอียดเล็ก ๆ ที่คนอื่นอาจมองข้าม'},
+ {id:'mystery',name:'???',avatar:'🧑❓',cost:0,style:'นักสำรวจลึกลับ',desc:'ตัวละครปริศนาที่จะเปิดเผยเมื่อปลดล็อกครบทุกคน',mystery:true}
+]
+let tickets=Number(localStorage.getItem('plantExplorerTickets')||0);
+let unlocked=JSON.parse(localStorage.getItem('plantExplorerUnlocked')||'["mina","leo"]');
+let state={i:0,score:0,hearts:3,combo:0,answers:[],locked:false,character:null,playerName:'นักสำรวจ'};
+const paths=[
+ {title:'สวนใบไม้ลึกลับ',icon:'🍃',text:'ลมพัดผ่านยอดไม้ หนูพบใบไม้รูปร่างแปลกตาและรอยทางเดินเล็ก ๆ',scene:'Leaf Garden',q:0},
+ {title:'ถ้ำแห่งราก',icon:'🪨',text:'ทางเดินพาลงไปใต้พื้นดิน ที่นี่มีรากไม้แผ่กิ่งก้านเต็มผนังถ้ำ',scene:'Root Cave',q:1},
+ {title:'ทุ่งเมล็ดพันธุ์',icon:'🌰',text:'เมล็ดเล็ก ๆ กระจายอยู่บนพื้น หนึ่งเมล็ดดูเหมือนกำลังจะงอก',scene:'Seed Meadow',q:2},
+ {title:'สะพานลำต้น',icon:'🌿',text:'สะพานธรรมชาติทอดผ่านลำธาร หนูสังเกตส่วนของพืชที่ลำเลียงน้ำ',scene:'Stem Bridge',q:3},
+ {title:'หุบเขาดอกไม้',icon:'🌸',text:'ดอกไม้หลากสีบานอยู่เต็มหุบเขา แต่มีป้ายภาษาอังกฤษซ่อนอยู่',scene:'Flower Valley',q:4},
+ {title:'ป่าต้นไม้สูง',icon:'🌳',text:'ต้นไม้สูงใหญ่บดบังท้องฟ้า เส้นทางด้านหน้ามีเงาของสิ่งมีชีวิตเคลื่อนไหว',scene:'Tree Grove',q:5},
+ {title:'ทุ่งหญ้า',icon:'🌱',text:'พื้นที่โล่งเต็มไปด้วยหญ้าสีเขียว มีเสียงแมลงดังอยู่รอบ ๆ',scene:'Grass Field',q:6},
+ {title:'สวนผลไม้',icon:'🍎',text:'หนูพบผลไม้ที่มีเมล็ดอยู่ข้างใน และเจอป้ายคำศัพท์อีกหนึ่งป้าย',scene:'Fruit Orchard',q:7},
+ {title:'น้ำพุแห่งชีวิต',icon:'💧',text:'ลำธารใสไหลผ่านป่า รากไม้บริเวณริมฝั่งดูดซึมน้ำจากพื้นดิน',scene:'Water Spring',q:8},
+ {title:'เนินแสงอาทิตย์',icon:'☀️',text:'เมื่อเดินขึ้นเนิน แสงแดดส่องลงมาบนใบไม้และทำให้ป่าดูสว่างขึ้น',scene:'Sunlight Hill',q:9}
+];
+
+
+let soundOn=true;
+let audioCtx=null;
+function popSound(type='pop'){
+ if(!soundOn)return;
+ try{
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended')audioCtx.resume();
+  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  const now=audioCtx.currentTime;
+  o.type='sine';
+  const f=type==='correct'?620:type==='wrong'?180:420;
+  o.frequency.setValueAtTime(f,now);
+  o.frequency.exponentialRampToValueAtTime(f*1.18,now+.07);
+  g.gain.setValueAtTime(.0001,now);
+  g.gain.exponentialRampToValueAtTime(.08,now+.012);
+  g.gain.exponentialRampToValueAtTime(.0001,now+.10);
+  o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+.11);
+ }catch(e){}
+}
+document.addEventListener('click',e=>{
+ const el=e.target.closest('button');
+ if(el && !el.disabled) popSound('pop');
+});
+
+function saveProgress(){
+ localStorage.setItem('plantExplorerTickets',tickets);
+ localStorage.setItem('plantExplorerUnlocked',JSON.stringify(unlocked));
+}
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active');window.scrollTo(0,0)}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function startAdventure(){
+ state={i:0,score:0,hearts:3,combo:0,answers:[],locked:false,character:null,playerName:'นักสำรวจ'};
+ renderCharacters();show('character');
+}
+function allRegularUnlocked(){
+ return characters.filter(c=>!c.mystery).every(c=>unlocked.includes(c.id));
+}
+function renderCharacters(){
+ const grid=document.getElementById('characterGrid');
+ if(!grid)return;
+ grid.innerHTML=characters.map(c=>{
+  const can=unlocked.includes(c.id);
+  const mysteryLocked=c.mystery && !can;
+  if(mysteryLocked){
+   return `<button class="character locked mystery-character" id="char-${c.id}" onclick="tryUnlock('${c.id}')">
+    <div class="character-avatar"><div class="mystery-silhouette"><span class="head"></span><span class="body"></span><span class="qmark">?</span></div></div><div><b>???</b></div>
+    <div class="small">ตัวละครลึกลับ</div><p class="small">ปลดล็อกนักสำรวจปกติให้ครบทุกคนเพื่อค้นพบตัวตนที่แท้จริง</p>
+    <div class="locked-label">🔒 ?</div>
+   </button>`;
+  }
+  return `<button class="character ${can?'':'locked'}" id="char-${c.id}" onclick="${can?`selectCharacter('${c.id}')`:`tryUnlock('${c.id}')`}">
+   <div class="character-avatar">${c.avatar}</div><div><b>${c.name}</b></div>
+   <div class="small">${c.style}</div><p class="small">${c.desc}</p>
+   ${can?'<div class="unlocked-label">✓ ปลดล็อกแล้ว</div>':`<div class="locked-label">🔒 ${c.cost} 🎟️</div>`}
+  </button>`;
+ }).join('');
+ const first=characters.find(c=>!c.mystery && unlocked.includes(c.id));
+ if(!state.character && first)selectCharacter(first.id);
+}
+function selectCharacter(id){
+ state.character=characters.find(c=>c.id===id);
+ document.querySelectorAll('.character').forEach(x=>x.classList.remove('selected'));
+ const el=document.getElementById('char-'+id);if(el)el.classList.add('selected');
+ document.getElementById('selectedCharacter').innerHTML=`${state.character.avatar} <b>${state.character.name}</b> พร้อมออกเดินทาง!`;
+ document.getElementById('continueCharacter').disabled=false;
+}
+function tryUnlock(id){
+ const c=characters.find(x=>x.id===id);
+ if(c.mystery){
+  if(allRegularUnlocked()){
+   unlocked.push(id);saveProgress();renderCharacters();renderShop();selectCharacter(id);
+   toast('ค้นพบตัวละครลึกลับแล้ว! ✨');
+  }else{
+   const left=characters.filter(x=>!x.mystery && !unlocked.includes(x.id)).length;
+   toast(`ยังปลดล็อกไม่ครบ เหลืออีก ${left} ตัว`);
+  }
+  return;
+ }
+ if(tickets>=c.cost){
+  tickets-=c.cost;unlocked.push(id);saveProgress();renderCharacters();selectCharacter(id);renderShop();toast(`ปลดล็อก ${c.name} สำเร็จ!`);
+ }else toast(`ต้องใช้ ${c.cost} 🎟️ แต่ตอนนี้มี ${tickets} 🎟️`);
+}
+function confirmCharacter(){
+ const n=(document.getElementById('playerName').value||'นักสำรวจ').trim().slice(0,18);
+ state.playerName=n||'นักสำรวจ';
+ if(!state.character)selectCharacter('mina');
+ renderMap();show('map');setScene('จุดเริ่มต้น',`ยินดีต้อนรับ ${state.playerName} ${state.character.avatar} สู่ Lost Forest เส้นทางแรกกำลังรออยู่...`);
+}
+function renderMap(){
+ document.getElementById('mapPlayer').textContent=`${state.character?.avatar||'🧭'} ${state.playerName}`;
+ document.getElementById('mapTickets').textContent=`🎟️ ตั๋ว: ${tickets}`;
+ document.getElementById('mapHearts').textContent=`❤️ ${state.hearts}`;
+ const grid=document.getElementById('pathGrid');
+ grid.innerHTML=paths.map((p,i)=>`<button class="path-btn" onclick="enterPath(${i})" ${i<state.i?'':'aria-label'}><span class="icon">${p.icon}</span><b>${p.title}</b><p class="small">${i<state.i?'สำรวจแล้ว ✓':p.text}</p></button>`).join('');
+}
+function setScene(title,text){
+ const a=document.getElementById('sceneTitle'),b=document.getElementById('sceneText');
+ if(a)a.textContent=title;if(b)b.textContent=text;
+}
+function enterPath(i){
+ const p=paths[i];setScene(p.title,p.text);
+ openStory(p.scene,p.text,()=>{
+   if(state.i<=i){state.i=Math.max(state.i,i);renderMap();renderQuestion();show('game');}
+ });
+}
+function openStory(title,text,cb){
+ document.getElementById('modalBadge').textContent='DISCOVERY';
+ document.getElementById('modalTitle').textContent=title;
+ document.getElementById('modalText').textContent=text;
+ const modal=document.getElementById('storyModal');modal.classList.remove('hidden');
+ modal.dataset.next='1';window.storyContinue=()=>{closeStory();if(cb)cb()};
+ document.querySelector('#storyModal .primary').onclick=()=>window.storyContinue();
+}
+function closeStory(){document.getElementById('storyModal').classList.add('hidden')}
+function openShop(){renderShop();show('shop')}
+function renderShop(){
+ document.getElementById('shopTickets').textContent=`🎟️ ตั๋ว: ${tickets}`;
+ document.getElementById('shopGrid').innerHTML=characters.map(c=>{
+  const can=unlocked.includes(c.id);
+  if(c.mystery && !can){
+   return `<div class="shop-card mystery-shop"><div class="shop-avatar"><div class="mystery-silhouette big"><span class="head"></span><span class="body"></span><span class="qmark">?</span></div></div><h3>???</h3><div class="small">ตัวละครลึกลับ</div><p class="locked-label">🔒 ปลดล็อกนักสำรวจปกติให้ครบทุกคน</p><button class="secondary" onclick="tryUnlock('mystery')">ค้นหาตัวตน</button></div>`;
+  }
+  return `<div class="shop-card"><div class="shop-avatar">${c.avatar}</div><h3>${c.name}</h3><div class="small">${c.style}</div>${can?'<p class="unlocked-label">✓ ใช้งานได้</p>':`<p class="locked-label">🔒 ${c.cost} 🎟️</p><button class="primary" onclick="buyCharacter('${c.id}')">ปลดล็อก</button>`}</div>`;
+ }).join('');
+}
+function buyCharacter(id){tryUnlock(id)}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),2200)}
+function renderQuestion(){
+ let q=questions[state.i];if(!q)return;
+ state.locked=false;
+ document.getElementById('playerStat').textContent=state.character?`${state.character.avatar} ${state.playerName}`:'🧭 นักสำรวจ';
+ document.getElementById('qstat').textContent=`Question ${state.i+1} / 10`;
+ document.getElementById('score').textContent=`⭐ Score: ${state.score} / 100`;
+ document.getElementById('hearts').textContent='❤ '.repeat(state.hearts)+'♡ '.repeat(3-state.hearts);
+ document.getElementById('difficulty').textContent=q[0];
+ document.getElementById('definition').textContent='“'+q[1]+'”';
+ document.getElementById('bar').style.width=(state.i/10*100)+'%';
+ document.getElementById('feedback').className='feedback hidden';
+ document.getElementById('nextBtn').classList.add('hidden');
+ document.getElementById('choices').innerHTML=shuffle(q[3]).map(c=>`<button class="choice" onclick="answer(this,'${c}')">${c}</button>`).join('');
+}
+function answer(btn,choice){
+ if(state.locked)return;state.locked=true;
+ let q=questions[state.i],correct=choice===q[2];
+ [...document.querySelectorAll('.choice')].forEach(b=>{b.disabled=true;if(b.textContent===q[2])b.classList.add('correct')});
+ if(!correct)btn.classList.add('wrong');
+ let fb=document.getElementById('feedback');
+ if(correct){
+  popSound('correct');
+  state.score+=10;state.combo++;tickets++;saveProgress();
+  fb.className='feedback good';fb.innerHTML=`✓ Correct! +10 points<br><span class="small">${q[2]} = ${q[4]}${state.combo>=3?' • Amazing Explorer!':state.combo===2?' • Nice Combo!':''}</span>`;
+  if(state.combo>=3)celebrate();
+ }else{
+  popSound('wrong');
+  state.hearts=Math.max(0,state.hearts-1);state.combo=0;
+  fb.className='feedback bad';fb.innerHTML=`✗ Not quite! Correct answer: <b>${q[2]}</b><br><span class="small">${q[2]} = ${q[4]}</span>`;
+ }
+ state.answers.push({q,choice,correct});
+ document.getElementById('score').textContent=`⭐ Score: ${state.score} / 100`;
+ document.getElementById('hearts').textContent='❤ '.repeat(state.hearts)+'♡ '.repeat(3-state.hearts);
+ document.getElementById('bar').style.width=((state.i+1)/10*100)+'%';
+ if(!correct && state.hearts===0){
+  fb.innerHTML=`✗ หัวใจหมดแล้ว<br><span class="small">การสำรวจรอบนี้จบลงแล้ว คะแนนของคุณคือ <b>${state.score}/100</b></span>`;
+  document.getElementById('nextBtn').textContent='ดูผลลัพธ์';
+  document.getElementById('nextBtn').onclick=showResult;
+ }else{
+  document.getElementById('nextBtn').textContent=state.i===9?'ดูผลลัพธ์':'เดินทางต่อ';
+  document.getElementById('nextBtn').onclick=nextQuestion;
+ }
+ document.getElementById('nextBtn').classList.remove('hidden');
+}
+function nextQuestion(){
+ if(state.i>=9){showResult();return}
+ state.i++;renderMap();renderQuestion();show('game');
+}
+function celebrate(){
+ const el=document.getElementById('celebrate');el.classList.remove('hidden');el.style.display='flex';
+ setTimeout(()=>{el.classList.add('hidden');el.style.display='none'},900);
+}
+function showResult(){
+ const correct=state.answers.filter(a=>a.correct).length,acc=Math.round(correct/10*100);
+ const text=state.score>=90?'ยอดเยี่ยม! หนูเป็นนักสำรวจป่าตัวจริง':state.score>=70?'เก่งมาก! ความรู้คำศัพท์ของหนูดีมาก':state.score>=50?'ทำได้ดี! ลองสำรวจและทบทวนคำศัพท์อีกครั้ง':'ไม่เป็นไร! นักสำรวจทุกคนเรียนรู้จากการเดินทาง';
+ document.getElementById('finalScore').textContent=`${state.score} / 100`;
+ document.getElementById('resultText').textContent=text;
+ document.getElementById('resultStats').textContent=`ตอบถูก ${correct} / 10 • Accuracy: ${acc}% • 🎟️ ตั๋วสะสมทั้งหมด: ${tickets}`;
+ show('result');
+}
+function showReview(){
+ document.getElementById('reviewList').innerHTML=state.answers.map((a,i)=>`<div class="review-item"><b>Question ${i+1} — ${a.q[0]}</b><p>“${a.q[1]}”</p><div>Your answer: <b>${a.choice}</b> ${a.correct?'✓':'✗'}</div><div>Correct answer: <b>${a.q[2]}</b> — ${a.q[4]}</div></div>`).join('');
+ show('review');
+}
+document.getElementById('vocabGrid').innerHTML=questions.map(q=>`<div class="vocab"><b>${q[2]}</b><p class="small">“${q[1]}”</p><div>${q[4]}</div></div>`).join('');
+renderShop();renderCharacters();renderMap();
+
+</script>
+</body></html>
